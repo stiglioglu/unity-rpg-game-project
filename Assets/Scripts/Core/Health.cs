@@ -1,10 +1,10 @@
 using UnityEngine;
 
-namespace RPG.Combat
+namespace RPG.Core
 {
     public class Health : MonoBehaviour
     {
-        [SerializeField] private float health = 100f;
+        [SerializeField] private float healthPoints = 100f;
 
         private bool isDead = false;
 
@@ -15,9 +15,9 @@ namespace RPG.Combat
 
         public void TakeDamage(float damage)
         {
-            health = Mathf.Max(health - damage, 0);
-            Debug.Log(health);
-            if (health<=0)
+            healthPoints = Mathf.Max(healthPoints - damage, 0);
+            
+            if (healthPoints <= 0)
             {
                 Die();
             }
@@ -26,8 +26,10 @@ namespace RPG.Combat
         private void Die()
         {
             if (isDead) return;
-            GetComponent<Animator>().SetTrigger("die");
+            
             isDead = true;
+            GetComponent<Animator>().SetTrigger("die");
+            GetComponent<ActionScheduler>().CancelCurrentAction();
         }
     }
 }
